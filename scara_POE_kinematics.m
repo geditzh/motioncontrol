@@ -1,0 +1,26 @@
+clc;clear all;
+syms L0 L1 L2 theta1 theta2 theta3 theta4;
+w1 = [0;0;1];q1 = [0;0;0];
+w2 = [0;0;1];q2 = [0;L1;0];
+w3 = [0;0;1];q3 = [0;L1+L2;0];
+w4 = [0;0;0];q4 = [0;L1+L2;L0];
+v1 = cross(-w1,q1);xi1 = [v1;w1];
+v2 = cross(-w2,q2);xi2 = [v2;w2];
+v3 = cross(-w3,q3);xi3 = [v3;w3];
+v4 = [0;0;theta4] ;xi4 = [v4;w4];
+e_omega_theta1 = [cos(theta1) -sin(theta1) 0;
+                  sin(theta1)  cos(theta1) 0;
+                      0           0        1];
+e_omega_theta2 = [cos(theta2) -sin(theta2) 0;
+                  sin(theta2)  cos(theta2) 0;
+                      0           0        1];
+e_omega_theta3 = [cos(theta3) -sin(theta3) 0;
+                  sin(theta3)  cos(theta3) 0;
+                      0           0        1];
+e_omega_theta4 = eye(3);
+e_xi1_theta1 = [e_omega_theta1 (eye(3)-e_omega_theta1)*(cross(w1,v1));zeros(1,3) 1];
+e_xi2_theta2 = [e_omega_theta2 (eye(3)-e_omega_theta2)*(cross(w2,v2));zeros(1,3) 1];
+e_xi3_theta3 = [e_omega_theta3 (eye(3)-e_omega_theta3)*(cross(w3,v3));zeros(1,3) 1];
+e_xi4_theta4 = [e_omega_theta4 v4;zeros(1,3) 1];
+g_ab_0 = [eye(3) q4;zeros(1,3) 1];
+g_ab_theta = simplify(e_xi1_theta1*e_xi2_theta2*e_xi3_theta3*e_xi4_theta4*g_ab_0)
